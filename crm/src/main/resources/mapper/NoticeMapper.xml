@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaishengit.mapper.NoticeMapper">
+    <insert id="save">
+        insert into t_notice (title,context,createtime,userid,realname)
+        values (#{title},#{context},#{createtime},#{userid},#{realname})
+    </insert>
+    <insert id="saveNoticeView">
+        insert into t_notice_view (noticeid,viewname,viewtime)
+        values (#{noticeid},#{viewname},#{viewtime})
+    </insert>
+
+    <select id="findByParam" resultType="com.kaishengit.pojo.Notice">
+        select * from t_notice limit ${start},${length}
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(*) from t_notice
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.Notice">
+        select * from t_notice where id = #{noticeId}
+    </select>
+    <select id="findNoticeViews" resultType="com.kaishengit.pojo.NoticeView">
+        select * from t_notice_view where noticeid = #{noticeId}
+    </select>
+    <select id="findNoticeViewByNoticeId" resultType="com.kaishengit.pojo.NoticeView">
+        select * from t_notice_view where noticeid = #{noticeId}
+    </select>
+</mapper>

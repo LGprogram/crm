@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.CustomerMapper">
+    <insert id="save">
+        insert into t_customer(name,tel,weixin,address,email,createtime,
+        userid,pinyin,companyid,companyname,level,type) values(#{name},#{tel},#{weixin},#{address},
+        #{email},#{createtime},#{userid},#{pinyin},#{companyid},#{companyname},#{level},#{type})
+    </insert>
+    <update id="update">
+        update t_customer set name=#{name},tel=#{tel},level=#{level},weixin=#{weixin},userid=#{userid},
+        address=#{address},pinyin=#{pinyin},companyid=#{companyid},companyname=#{companyname} where id=#{id}
+    </update>
+    <delete id="delCustomer">
+        delete from t_customer where id=#{id}
+    </delete>
+
+    <select id="count" resultType="java.lang.Long">
+        select count(*) from t_customer
+        <where>
+            <if test="keyword !=null and keyword !=''">
+                name like concat("%",#{keyword},"%") or tel like concat("%",#{keyword},"%")
+            </if>
+        </where>
+    </select>
+    <select id="findByMap" resultType="com.kaishengit.pojo.Customer">
+        select *from t_customer
+        <where>
+            <if test="userid !=null and userid !=''">
+                (userid=#{userid} or (userid = '' or userid is null))
+            </if>
+
+            <if test="keyword !=null and keyword !=''">
+              and  (name like concat("%",#{keyword},"%") or pinyin like concat('%',#{keyword},'%') or tel like concat("%",#{keyword},"%"))
+            </if>
+        </where>
+        limit ${start},${length}
+    </select>
+    <select id="findCompany" resultType="com.kaishengit.pojo.Customer">
+        select * from t_customer where type = 'company';
+    </select>
+    <select id="findIdByName" resultType="com.kaishengit.pojo.Customer">
+        select*from t_customer where name=#{name}
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.Customer">
+        select*from t_customer where id=#{id}
+    </select>
+    <select id="findByCompanyId" resultType="com.kaishengit.pojo.Customer">
+        select *from t_customer where companyid=#{companyId}
+    </select>
+
+
+</mapper>
